@@ -39,7 +39,7 @@ public class QAJobsPage extends BasePage {
 
             if (!position.toLowerCase().contains("Quality Assurance") ||
                     !department.toLowerCase().contains("Quality Assurance") ||
-                    !location.toLowerCase().contains("Istanbul")
+                    !location.toLowerCase().contains("Istanbul, Turkey")
             )
             {
                 System.out.println("UYUMSUZ -> " + position + " | " + department + " | " + location);
