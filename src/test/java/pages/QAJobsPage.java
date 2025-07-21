@@ -4,9 +4,6 @@ import base.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,12 +21,11 @@ public class QAJobsPage extends BasePage {
     private final By jobList = By.xpath("//*[@id=\"jobs-list\"]");
     private final By jobCards = By.cssSelector("div.position-list-item-wrapper");
     private final By viewRole=By.cssSelector(".btn.btn-navy.rounded.pt-2.pr-5.pb-2.pl-5[href='https://jobs.lever.co/useinsider/78ddbec0-16bf-4eab-b5a6-04facb993ddc']");
-    private final By leverForm= By.cssSelector("a[href*='lever.co']");
+    private final By locationOption = By.xpath("//select[@id='filter-by-location']/option[contains(@class, 'job-location')]");
 
     public boolean areAllJobsFilteredCorrectly(){
 
         scrollTo(jobCards);
-
         List<WebElement> jobs = driver.findElements(jobCards);
 
         for (WebElement job: jobs){
@@ -37,14 +33,14 @@ public class QAJobsPage extends BasePage {
             String department = job.findElement(By.cssSelector("span.position-department")).getText();
             String location = job.findElement(By.cssSelector("div.position-location")).getText();
 
-            if (!position.toLowerCase().contains("Quality Assurance") ||
-                    !department.toLowerCase().contains("Quality Assurance") ||
-                    !location.toLowerCase().contains("Istanbul, Turkey")
-            )
+            if (!position.contains("Quality Assurance") ||
+                    !department.contains("Quality Assurance") ||
+                    !location.contains("Istanbul, Turkiye"))
             {
-                System.out.println("UYUMSUZ -> " + position + " | " + department + " | " + location);
+                System.out.println("Eşleşmiyor -> " + position + " | " + department + " | " + location);
                 return false;
             }
+            System.out.println("Eşleşiyor -> " + position + " | " + department + " | " + location);
         }
         return true;
     }
@@ -54,7 +50,7 @@ public class QAJobsPage extends BasePage {
     }
 
     public boolean isJobListVisible(){
-        scrollTo(jobCards);
+        scrollTo(jobList);
         return driver.findElements(jobList).size() > 0 ;
     }
     public void goToQaJobsPage(){
@@ -84,9 +80,10 @@ public class QAJobsPage extends BasePage {
         return driver.getCurrentUrl();
     }
     public void selectLocationFilter(){
-        wait(10000);
+        waitForElementVisible(locationOption);
         click(filterByLocation);
         waitForElementVisible(locationIstanbul);
+        //scrollTo(locationIstanbul);
         wait(1000);
         click(locationIstanbul);
         wait(2000);
@@ -95,6 +92,7 @@ public class QAJobsPage extends BasePage {
         waitForElementVisible(filterByDepartment);
         click(filterByDepartment);
         wait(2000);
+        //scrollTo(qualityAssurance);
         click(qualityAssurance);
         wait(1000);
 

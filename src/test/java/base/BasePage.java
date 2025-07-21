@@ -36,7 +36,7 @@ public class BasePage {
     }
     protected WebElement waitForElementVisible (By locator){
         try {
-            return new WebDriverWait(driver, Duration.ofSeconds(10))
+            return new WebDriverWait(driver, Duration.ofSeconds(15))
                     .until(ExpectedConditions.visibilityOfElementLocated(locator));
         } catch (Exception e) {
             String errorMsg = "Element " + locator + " cannot be located timeout ";
@@ -75,7 +75,7 @@ public class BasePage {
 
     public void scrollTo(By locator){
         WebElement element = driver.findElement(locator);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", element);
         try{
             Thread.sleep(2000);
         }catch (InterruptedException e){

@@ -11,9 +11,9 @@ public class CareersPage extends BasePage {
     }
     private final By companyMenu = By.xpath("//*[@id=\"navbarNavDropdown\"]/ul[1]/li[6]");
     private final By careersMenu = By.xpath("//a[normalize-space()='Careers']");
-    private final By locationBlock= By.xpath("//h3[@class='category-title-media ml-0']");
-    private final By teamsBlock = By.xpath("//h3[normalize-space()='Find your calling']");
-    private final By lifeAtInsiderBlock = By.xpath("//h2[normalize-space()='Life at Insider']");
+    private final By locationBlock= By.xpath("//div[contains(@class, 'col-12') and contains(@class, 'mt-3')]\n");
+    private final By teamsBlock = By.xpath("//section[@id='career-find-our-calling']");
+    private final By lifeAtInsiderBlock = By.xpath("//div[contains(@class, 'elementor-widget-media-carousel')]//div[contains(@class, 'elementor-widget-container')]\n");
 
 
     public void clickCompanyMenu(){
@@ -25,6 +25,7 @@ public class CareersPage extends BasePage {
         closeCookieBanner();
         hoverOver(companyMenu);
         click(companyMenu);
+        wait(2000);
         click(careersMenu);
     }
 

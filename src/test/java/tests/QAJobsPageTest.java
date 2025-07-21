@@ -41,7 +41,7 @@ public class QAJobsPageTest extends BaseTest {
 
         boolean allFilteredCorrectly = qaJobsPage.areAllJobsFilteredCorrectly();
 
-        Assert.assertTrue(allFilteredCorrectly,"Some jobs do not match the filter: QA / Istanbul / Department" );
+        Assert.assertTrue(allFilteredCorrectly,"Some jobs do not match the filter" );
         System.out.println("Filtered is working correctly!");
 
     }
@@ -62,7 +62,7 @@ public class QAJobsPageTest extends BaseTest {
 
         String currentURL= qaJobsPage.getCurrentPageUrl();
         Assert.assertTrue(currentURL.contains("lever.co"), "View Role button does not redirect to Lever application page.");
-        System.out.println("Page redirect succesfull!");
+        System.out.println("Page redirect succesfull! Current URL :" + currentURL);
 
 
     }
