@@ -17,10 +17,10 @@ public class QAJobsPage extends BasePage {
     private final By filterByLocation = By.xpath("//span[@id='select2-filter-by-location-container']");
     private final By locationIstanbul = By.xpath("//li[@class='select2-results__option' and contains(text(), 'Istanbul')]");
     private final By filterByDepartment = By.xpath("//span[@id='select2-filter-by-department-container']");
-    private final By qualityAssurance = By.xpath("//li[@class='select2-results__option select2-results__option--highlighted' and contains(text(), 'Quality')]");
+    private final By qualityAssurance = By.xpath("//li[@class='select2-results__option' and contains(text(), 'Quality Assurance')]\n");
     private final By jobList = By.xpath("//*[@id=\"jobs-list\"]");
     private final By jobCards = By.cssSelector("div.position-list-item-wrapper");
-    private final By viewRole=By.cssSelector(".btn.btn-navy.rounded.pt-2.pr-5.pb-2.pl-5[href='https://jobs.lever.co/useinsider/78ddbec0-16bf-4eab-b5a6-04facb993ddc']");
+    private final By viewRole=By.xpath("//a[contains(@class,'btn-navy') and text()='View Role']\n");
     private final By locationOption = By.xpath("//select[@id='filter-by-location']/option[contains(@class, 'job-location')]");
 
     public boolean areAllJobsFilteredCorrectly(){
@@ -55,6 +55,7 @@ public class QAJobsPage extends BasePage {
     }
     public void goToQaJobsPage(){
         driver.get("https://useinsider.com/careers/quality-assurance/");
+        wait(1000);
         closeCookieBanner();
     }
 
@@ -92,7 +93,8 @@ public class QAJobsPage extends BasePage {
         waitForElementVisible(filterByDepartment);
         click(filterByDepartment);
         wait(2000);
-        //scrollTo(qualityAssurance);
+        scrollTo(qualityAssurance);
+        waitForElementVisible(qualityAssurance);
         click(qualityAssurance);
         wait(1000);
 

@@ -1,49 +1,44 @@
 package base;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
-import pages.HomePage;
+import org.testng.ITestResult;
+import org.testng.annotations.*;
+import utils.DriverFactory;
 
-import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class BaseTest {
 
     protected WebDriver driver;
 
+    @Parameters("browser")
     @BeforeMethod
-    public void setUp(){
-        WebDriverManager.chromedriver().setup();
-
-        // Bildirim ayarlarını tamamen devre dışı bırak
-        Map<String, Object> prefs = new HashMap<>();
-        prefs.put("profile.default_content_setting_values.notifications", 2);
-
-        ChromeOptions options = new ChromeOptions();
-        options.setExperimentalOption("prefs", prefs);
-        options.addArguments("--disable-notifications");
-        options.addArguments("--disable-popup-blocking");
-        options.addArguments("--disable-infobars");
-        options.addArguments("--start-maximized");
-        options.addArguments("--remote-allow-origins=*");
-
-        driver = new ChromeDriver(options);
-
+    public void setUp(@Optional("Chrome") String browser) {
+        driver = DriverFactory.getDriver(browser);
     }
+
     @AfterMethod
-    public void tearDown(){
-        if (driver != null){
-            driver.quit();
+    public void tearDown(ITestResult result) {
+        if (ITestResult.FAILURE == result.getStatus()) {
+            TakesScreenshot ts = (TakesScreenshot) driver;
+            File src = ts.getScreenshotAs(OutputType.FILE);
+
+            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            File dest = new File("screenshots/" + result.getName() + "_" + timestamp + ".png");
+            try {
+                Files.createDirectories(dest.getParentFile().toPath());
+                Files.copy(src.toPath(), dest.toPath());
+                System.out.println("Screenshot saved at: " + dest.getAbsolutePath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+        DriverFactory.quitDriver();
     }
 }
